@@ -53,6 +53,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.HashSet;
+import org.conscrypt.Conscrypt;
+
+import static org.conscrypt.Conscrypt.newProvider;
 
 
 public class SslFactory implements Reconfigurable {
@@ -207,12 +210,10 @@ public class SslFactory implements Reconfigurable {
 
     // package access for testing
     SSLContext createSSLContext(SecurityStore keystore, SecurityStore truststore) throws GeneralSecurityException, IOException  {
-        SSLContext sslContext;
         if (provider != null)
             sslContext = SSLContext.getInstance(protocol, provider);
         else
-            sslContext = SSLContext.getInstance(protocol);
-
+            sslContext = SSLContext.getInstance(protocol, newProvider());
         KeyManager[] keyManagers = null;
         if (keystore != null) {
             String kmfAlgorithm = this.kmfAlgorithm != null ? this.kmfAlgorithm : KeyManagerFactory.getDefaultAlgorithm();
@@ -268,6 +269,9 @@ public class SslFactory implements Reconfigurable {
             SSLParameters sslParams = sslEngine.getSSLParameters();
             sslParams.setEndpointIdentificationAlgorithm(endpointIdentification);
             sslEngine.setSSLParameters(sslParams);
+        }
+        if (!Conscrypt.isConscrypt(sslEngine)) {
+            throw new IllegalStateException("ssl engine is not created by conscrypt.");
         }
         return sslEngine;
     }

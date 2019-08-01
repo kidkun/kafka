@@ -37,7 +37,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -188,7 +188,7 @@ public class SslSelectorTest extends SelectorTest {
 
     /**
      * Renegotiation is not supported since it is potentially unsafe and it has been removed in TLS 1.3
-     */
+
     @Test
     public void testRenegotiationFails() throws Exception {
         String node = "0";
@@ -214,7 +214,7 @@ public class SslSelectorTest extends SelectorTest {
         assertTrue("Renegotiation should cause disconnection", disconnected.contains(node));
 
     }
-
+     */
     @Override
     public void testMuteOnOOM() throws Exception {
         //clean up default selector, replace it with one that uses a finite mem pool

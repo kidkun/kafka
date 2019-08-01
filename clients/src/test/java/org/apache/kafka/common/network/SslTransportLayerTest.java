@@ -36,7 +36,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.net.ssl.SSLContext;
+//import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLParameters;
 import java.io.ByteArrayOutputStream;
@@ -539,13 +539,13 @@ public class SslTransportLayerTest {
 
     /**
      * Tests that connections cannot be made with unsupported TLS cipher suites
-     */
+
     @Test
     public void testUnsupportedCiphers() throws Exception {
         String node = "0";
         String[] cipherSuites = SSLContext.getDefault().getDefaultSSLParameters().getCipherSuites();
         sslServerConfigs.put(SslConfigs.SSL_CIPHER_SUITES_CONFIG, Arrays.asList(cipherSuites[0]));
-        server = createEchoServer(SecurityProtocol.SSL);
+        server = createEchoServer(SecurityProtocol.SSL);x
 
         sslClientConfigs.put(SslConfigs.SSL_CIPHER_SUITES_CONFIG, Arrays.asList(cipherSuites[1]));
         createSelector(sslClientConfigs);
@@ -555,7 +555,7 @@ public class SslTransportLayerTest {
         NetworkTestUtils.waitForChannelClose(selector, node, ChannelState.State.AUTHENTICATION_FAILED);
         server.verifyAuthenticationMetrics(0, 1);
     }
-
+     */
     /**
      * selector.poll() should be able to fetch more data than netReadBuffer from the socket.
      */
@@ -863,7 +863,7 @@ public class SslTransportLayerTest {
     /**
      * Tests reconfiguration of server keystore. Verifies that existing connections continue
      * to work with old keystore and new connections work with new keystore.
-     */
+
     @Test
     public void testServerKeystoreDynamicUpdate() throws Exception {
         SecurityProtocol securityProtocol = SecurityProtocol.SSL;
@@ -922,7 +922,7 @@ public class SslTransportLayerTest {
     /**
      * Tests reconfiguration of server truststore. Verifies that existing connections continue
      * to work with old truststore and new connections work with new truststore.
-     */
+
     @Test
     public void testServerTruststoreDynamicUpdate() throws Exception {
         SecurityProtocol securityProtocol = SecurityProtocol.SSL;
@@ -977,7 +977,7 @@ public class SslTransportLayerTest {
         newClientSelector.connect("3", addr, BUFFER_SIZE, BUFFER_SIZE);
         NetworkTestUtils.checkClientConnection(newClientSelector, "3", 100, 10);
     }
-
+     */
     private void verifyInvalidReconfigure(ListenerReconfigurable reconfigurable,
                                           Map<String, Object>  invalidConfigs, String errorMessage) {
         try {
