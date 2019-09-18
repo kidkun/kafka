@@ -658,6 +658,7 @@ public class Fetcher<K, V> implements SubscriptionState.Listener, Closeable {
                     partitionRecords.partition);
         } else {
             long position = subscriptions.position(partitionRecords.partition);
+            System.out.printf("%d %d\n",partitionRecords.nextFetchOffset,position);
             if (partitionRecords.nextFetchOffset == position) {
                 List<ConsumerRecord<K, V>> partRecords = partitionRecords.fetchRecords(maxRecords);
 

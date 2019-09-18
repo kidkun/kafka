@@ -1610,6 +1610,24 @@ public class FetcherTest {
         assertEquals(197, recordsFetchLagMax.value(), EPSILON);
         assertEquals(197, partitionLag.value(), EPSILON);
 
+        System.out.println("test");
+        MemoryRecordsBuilder builder2 = MemoryRecords.builder(ByteBuffer.allocate(1024), CompressionType.NONE,
+            TimestampType.CREATE_TIME, 0L);
+        for (int v = 0; v < 3; v++)
+            builder2.appendWithOffset(6 + 2 * v, RecordBatch.NO_TIMESTAMP, "key".getBytes(), ("value-" + v).getBytes());
+        fetchRecords(tp0, builder2.build(), Errors.NONE, 200L, 0);
+
+        System.out.println("test2");
+        MemoryRecordsBuilder builder3 = MemoryRecords.builder(ByteBuffer.allocate(1024), CompressionType.NONE,
+            TimestampType.CREATE_TIME, 0L);
+        for (int v = 0; v < 3; v++)
+            builder3.appendWithOffset(100 + 2 * v, RecordBatch.NO_TIMESTAMP, "key".getBytes(), ("value-" + v).getBytes());
+        Map<TopicPartition,  List<ConsumerRecord<byte[], byte[]>>> records = fetchRecords(tp0, builder3.build(), Errors.NONE, 200L, 0);
+
+        assertEquals(95, partitionLag.value(), EPSILON);
+        assertEquals(3, records.get(tp0).size(), EPSILON);
+
+
         // verify de-registration of partition lag
         subscriptions.unsubscribe();
         assertFalse(allMetrics.containsKey(partitionLagMetric));
@@ -1882,6 +1900,7 @@ public class FetcherTest {
 
     private Map<TopicPartition, List<ConsumerRecord<byte[], byte[]>>> fetchRecords(
             TopicPartition tp, MemoryRecords records, Errors error, long hw, int throttleTime) {
+        System.out.print(records);
         return fetchRecords(tp, records, error, hw, FetchResponse.INVALID_LAST_STABLE_OFFSET, throttleTime);
     }
 
