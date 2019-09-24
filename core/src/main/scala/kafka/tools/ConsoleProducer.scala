@@ -95,6 +95,7 @@ object ConsoleProducer {
     props.put(ProducerConfig.SEND_BUFFER_CONFIG, config.socketBuffer.toString)
     props.put(ProducerConfig.RETRY_BACKOFF_MS_CONFIG, config.retryBackoffMs.toString)
     props.put(ProducerConfig.METADATA_MAX_AGE_CONFIG, config.metadataExpiryMs.toString)
+    props.put(ProducerConfig.MAX_METADATA_FETCH_BLOCK_MS_CONFIG, config.maxBlockMs.toString)
     props.put(ProducerConfig.MAX_BLOCK_MS_CONFIG, config.maxBlockMs.toString)
     props.put(ProducerConfig.ACKS_CONFIG, config.requestRequiredAcks)
     props.put(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, config.requestTimeoutMs.toString)

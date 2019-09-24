@@ -207,6 +207,7 @@ public class RoundTripWorker implements TaskWorker {
             props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, spec.bootstrapServers());
             props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16 * 1024);
             props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 4 * 16 * 1024L);
+            props.put(ProducerConfig.MAX_METADATA_FETCH_BLOCK_MS_CONFIG, 1000L);
             props.put(ProducerConfig.MAX_BLOCK_MS_CONFIG, 1000L);
             props.put(ProducerConfig.CLIENT_ID_CONFIG, "producer." + id);
             props.put(ProducerConfig.ACKS_CONFIG, "all");

@@ -139,10 +139,16 @@ public class ProducerConfig extends AbstractConfig {
     public static final String RECONNECT_BACKOFF_MAX_MS_CONFIG = CommonClientConfigs.RECONNECT_BACKOFF_MAX_MS_CONFIG;
 
     /** <code>max.block.ms</code> */
+    public static final String MAX_METADATA_FETCH_BLOCK_MS_CONFIG = "max.metadata.fetch.block.ms";
+    private static final String MAX_METADATA_FETCH_BLOCK_MS_DOC = "The configuration controls how long <code>KafkaProducer.send()</code> and <code>KafkaProducer.partitionsFor()</code> will block"
+        + " if metadata is unavailable.";
+
+    /** <code>max.block.ms</code> */
     public static final String MAX_BLOCK_MS_CONFIG = "max.block.ms";
-    private static final String MAX_BLOCK_MS_DOC = "The configuration controls how long <code>KafkaProducer.send()</code> and <code>KafkaProducer.partitionsFor()</code> will block."
-                                                    + "These methods can be blocked either because the buffer is full or metadata unavailable."
-                                                    + "Blocking in the user-supplied serializers or partitioner will not be counted against this timeout.";
+    private static final String MAX_BLOCK_MS_DOC = "The configuration and <code>" + MAX_METADATA_FETCH_BLOCK_MS_CONFIG + "</code> controls how long <code>KafkaProducer.send()</code> will block."
+        + "<code>" + MAX_METADATA_FETCH_BLOCK_MS_CONFIG + "</code> first comes in and limits how long this method can be blocked due to metadata unavailability. After the metadata is retrieved,"
+        + " the time set by this config substracting elapsed time determines how long can be blocked if the buffer is full."
+        + "Blocking in the user-supplied serializers or partitioner will not be counted.";
 
     /** <code>buffer.memory</code> */
     public static final String BUFFER_MEMORY_CONFIG = "buffer.memory";
@@ -268,6 +274,12 @@ public class ProducerConfig extends AbstractConfig {
                                 .define(RECONNECT_BACKOFF_MS_CONFIG, Type.LONG, 50L, atLeast(0L), Importance.LOW, CommonClientConfigs.RECONNECT_BACKOFF_MS_DOC)
                                 .define(RECONNECT_BACKOFF_MAX_MS_CONFIG, Type.LONG, 1000L, atLeast(0L), Importance.LOW, CommonClientConfigs.RECONNECT_BACKOFF_MAX_MS_DOC)
                                 .define(RETRY_BACKOFF_MS_CONFIG, Type.LONG, 100L, atLeast(0L), Importance.LOW, CommonClientConfigs.RETRY_BACKOFF_MS_DOC)
+                                .define(MAX_METADATA_FETCH_BLOCK_MS_CONFIG,
+                                        Type.LONG,
+                                        60 * 1000,
+                                        atLeast(0),
+                                        Importance.MEDIUM,
+                                        MAX_METADATA_FETCH_BLOCK_MS_DOC)
                                 .define(MAX_BLOCK_MS_CONFIG,
                                         Type.LONG,
                                         60 * 1000,

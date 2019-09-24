@@ -394,7 +394,7 @@ public class KafkaProducerTest {
     public void testTopicRefreshInMetadata() throws Exception {
         Properties props = new Properties();
         props.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9999");
-        props.setProperty(ProducerConfig.MAX_BLOCK_MS_CONFIG, "600000");
+        props.setProperty(ProducerConfig.MAX_METADATA_FETCH_BLOCK_MS_CONFIG, "600000");
         KafkaProducer<String, String> producer = new KafkaProducer<>(props, new StringSerializer(), new StringSerializer());
         long refreshBackoffMs = 500L;
         long metadataExpireMs = 60000L;
@@ -619,6 +619,7 @@ public class KafkaProducerTest {
 
         Properties props = new Properties();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9000");
+        props.put(ProducerConfig.MAX_METADATA_FETCH_BLOCK_MS_CONFIG, "15000");
         props.put(ProducerConfig.MAX_BLOCK_MS_CONFIG, "15000");
 
         Time time = new MockTime();
@@ -658,7 +659,7 @@ public class KafkaProducerTest {
     @Test
     public void testCloseWhenWaitingForMetadataUpdate() throws InterruptedException {
         Properties props = new Properties();
-        props.put(ProducerConfig.MAX_BLOCK_MS_CONFIG, Long.MAX_VALUE);
+        props.put(ProducerConfig.MAX_METADATA_FETCH_BLOCK_MS_CONFIG, Long.MAX_VALUE);
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9000");
 
         // Simulate a case where metadata for a particular topic is not available. This will cause KafkaProducer#send to
